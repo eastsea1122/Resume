@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이력서 | 백엔드 개발자</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --primary: #253b55;
+      --text: #292d33;
+      --muted: #6d747e;
+      --line: #d8dce2;
+      --soft: #edf0f4;
+      --paper: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      background: #e9ebef;
+      color: var(--text);
+      font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .resume {
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 42px 48px;
+      background: var(--paper);
+      box-shadow: 0 8px 35px rgba(31, 41, 55, 0.10);
+    }
+
+    .resume-title {
+      margin: 0 0 30px;
+      text-align: center;
+      font-size: 31px;
+      font-weight: 800;
+      letter-spacing: 11px;
+    }
+
+    /* 인적 사항 */
+    .profile {
+      display: grid;
+      grid-template-columns: 154px 1fr;
+      gap: 22px;
+      align-items: stretch;
+      margin-bottom: 27px;
+    }
+
+    .photo-box {
+    width: 175px;
+    height: 245px;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9edf2;
+    border: 1px solid #d8dde5;
+    }
+
+    .photo-box .profile-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    object-position: center;
+    }
+
+    .photo-box.has-photo img {
+      display: block;
+    }
+
+    .photo-placeholder {
+      text-align: center;
+      padding: 12px;
+    }
+
+    .photo-placeholder strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .photo-placeholder span {
+      font-size: 10px;
+    }
+
+    .photo-upload {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      z-index: 2;
+      padding: 5px;
+      border: 1px solid #d5dae1;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.93);
+      color: #39485b;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px;
+    }
+
+    .photo-upload input {
+      display: none;
+    }
+
+    .profile-info {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr);
+      align-content: start;
+      border-top: 2px solid #737b86;
+    }
+
+    .profile-info .label,
+    .profile-info .value {
+      min-height: 37px;
+      display: flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .profile-info .label {
+      background: #f5f6f8;
+      font-weight: 700;
+      color: #525b67;
+    }
+
+    .profile-info .value {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 2px;
+    }
+
+    [contenteditable="true"]:focus {
+      background: #f1f6ff;
+      box-shadow: 0 0 0 2px #dce8fb;
+    }
+
+    /* 공통 섹션 */
+    .section {
+      margin-top: 25px;
+      break-inside: avoid;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding-bottom: 7px;
+      margin: 0 0 10px;
+      border-bottom: 2px solid #747c87;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th {
+      padding: 9px 7px;
+      background: #eef0f3;
+      border: 1px solid #d6dae0;
+      font-weight: 700;
+      color: #4a525e;
+      text-align: center;
+    }
+
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #e0e3e8;
+      vertical-align: middle;
+      overflow-wrap: anywhere;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .period {
+      width: 23%;
+    }
+
+    .school {
+      width: 29%;
+    }
+
+    .major {
+      width: 30%;
+    }
+
+    .degree {
+      width: 18%;
+    }
+
+    /* 프로젝트 */
+    .project-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .project {
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--primary);
+      background: #fff;
+      break-inside: avoid;
+    }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 5px;
+    }
+
+    .project h3 {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .project-type {
+      flex-shrink: 0;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .project-tech {
+      margin-top: 12px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* 하단 역량 */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .bottom-grid .section {
+      min-width: 0;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 3px 0;
+    }
+
+    .skill {
+      padding: 5px 11px;
+      border: 1px solid #d8dee7;
+      border-radius: 3px;
+      background: #f5f7fa;
+      color: #34465c;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .certificate td:first-child {
+      font-weight: 600;
+    }
+
+    .certificate td:last-child {
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: #777f8a;
+      font-size: 12px;
+    }
+
+    .toolbar {
+      max-width: 850px;
+      margin: 0 auto 14px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .toolbar button {
+      padding: 9px 16px;
+      border: 1px solid #d0d6df;
+      border-radius: 5px;
+      background: white;
+      color: #34465c;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .toolbar button.primary {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px 0;
+      }
+
+      .resume {
+        padding: 25px 18px;
+      }
+
+      .resume-title {
+        font-size: 24px;
+        margin-bottom: 22px;
+      }
+
+      .profile {
+        grid-template-columns: 105px minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .photo-box {
+        min-height: 140px;
+      }
+
+      .profile-info {
+        grid-template-columns: 60px minmax(0, 1fr);
+      }
+
+      .profile-info .label,
+      .profile-info .value {
+        padding: 6px;
+        font-size: 10px;
+      }
+
+      .bottom-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      th, td {
+        padding: 7px 4px;
+        font-size: 10px;
+      }
+
+      .project-top {
+        flex-direction: column;
+        gap: 2px;
+      }
+    }
+
+    @page {
+      size: A4;
+      margin: 12mm;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .toolbar,
+      .photo-upload {
+        display: none !important;
+      }
+
+      .resume {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+      }
+
+      .profile {
+        grid-template-columns: 125px minmax(0, 1fr);
+        gap: 16px;
+      }
+
+      .photo-box {
+        min-height: 145px;
+      }
+
+      .section {
+        margin-top: 18px;
+      }
+
+      .project {
+        padding: 9px 12px;
+      }
+
+      .section-heading {
+        break-after: avoid;
+      }
+
+      table, tr {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+    <div class="toolbar">
+    <button class="primary" onclick="window.print()">
+        인쇄 / PDF 저장
+    </button>
+    </div>
+
+
+  <main class="resume">
+
+    <h1 class="resume-title">이 력 서</h1>
+
+    <!-- 1. 인적 사항 -->
+    <section class="profile">
+
+
+    <div class="photo-box">
+      <img
+        src="./me1.jpg"
+        alt="프로필 사진"
+        class="profile-photo"
+      />
+    </div>
+
+
+      <div class="profile-info">
+
+        <div class="label">성명</div>
+        <div class="value" contenteditable="true">채동해</div>
+
+        <div class="label">지원 분야</div>
+        <div class="value" contenteditable="true">어디든ㅠ</div>
+
+        <div class="label">생년월일</div>
+        <div class="value" contenteditable="true">2002.11.22</div>
+
+        <div class="label">전화번호</div>
+        <div class="value" contenteditable="true">010-7925-8760</div>
+
+        <div class="label">주소</div>
+        <div class="value" contenteditable="true">인천광역시 검단구 원당대로966</div>
+
+        <div class="label">이메일</div>
+        <div class="value" contenteditable="true">dh8760@naver.com</div>
+
+        <div class="label">지원 회사</div>
+        <div class="value" contenteditable="true">A회사</div>
+
+      </div>
+    </section>
+
+    <!-- 2. 학력 사항 -->
+    <section class="section">
+
+      <div class="section-heading">
+        <h2>학력사항</h2>
+        <span>EDUCATION</span>
+      </div>
+
+      <table>
+        <colgroup>
+          <col class="period" />
+          <col class="school" />
+          <col class="major" />
+          <col class="degree" />
+        </colgroup>
+
+        <thead>
+          <tr>
+            <th>기간</th>
+            <th>학교명</th>
+            <th>전공</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td class="center" contenteditable="true">2018.03.01 - 2020.02.28</td>
+            <td class="center" contenteditable="true">계남고등학교</td>
+            <td class="center" contenteditable="true">-</td>
+            <td class="center" contenteditable="true">졸업</td>
+          </tr>
+
+          <tr>
+            <td class="center" contenteditable="true">2025.03.01 - 2027.02.28</td>
+            <td class="center" contenteditable="true">한국폴리텍대학교</td>
+            <td class="center" contenteditable="true">AI융합소프트웨어학</td>
+            <td class="center" contenteditable="true">졸업 예정</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+
+    <!-- 3. 프로젝트 경험 -->
+    <section class="section">
+
+      <div class="section-heading">
+        <h2>프로젝트 경험</h2>
+        <span>PROJECT EXPERIENCE</span>
+      </div>
+
+      <div class="project-list">
+
+        <article class="project">
+
+          <div class="project-top">
+            <h3 contenteditable="true">
+              저메추 | 사용자 키워드 기반 음식 추천 웹 서비스
+            </h3>
+            <span class="project-type">TEAM PROJECT</span>
+          </div>
+            <p contenteditable="true">사용자가 선택한 취향·상황별 키워드를 FoodScore 알고리즘으로 분석하고 점수화하여 개인에게 적합한 음식 메뉴를 추천하는 웹 서비스입니다.
+            </p>
+
+            <p contenteditable="true">단순한 메뉴 추천을 넘어, 추천 메뉴와 주변 음식점 검색을 연계하여 추천 메뉴를 판매하는 음식점 장소 탐색까지 하나의 흐름으로 제공합니다.
+            </p>
+
+            <p contenteditable="true">
+            <strong>담당 역할:</strong> 프론트엔드 개발을 담당하였으며, 음식점 검색 API 연동과 FoodScore 기반 음식 추천 알고리즘 설계에 기여했습니다.
+            </p>
+
+            <p contenteditable="true" style="margin-top: 0px;">
+            https://github.com/dddiaeik/food-recommend
+            </p>
+          <div class="project-tech" contenteditable="true">
+            사용 기술: React, Spring Boot, Git, SQL
+          </div>
+
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 4. 자격증 및 기술 역량 -->
+    <div class="bottom-grid">
+
+      <section class="section">
+
+        <div class="section-heading">
+          <h2>자격증</h2>
+          <span>CERTIFICATES</span>
+        </div>
+
+        <table class="certificate">
+          <thead>
+            <tr>
+              <th>자격증명</th>
+              <th>취득 상태</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td contenteditable="true">1종 보통</td>
+              <td contenteditable="true">보유</td>
+            </tr>
+
+            <tr>
+              <td contenteditable="true">정보처리산업기사</td>
+              <td contenteditable="true">준비 중</td>
+            </tr>
+
+            <tr>
+              <td contenteditable="true">SQLD</td>
+              <td contenteditable="true">준비 중</td>
+            </tr>
+
+          </tbody>
+        </table>
+
+      </section>
+
+      <section class="section">
+
+        <div class="section-heading">
+          <h2>기술 역량</h2>
+          <span>TECH SKILLS</span>
+        </div>
+
+        <div class="skill-list">
+          <span class="skill" contenteditable="true">Java</span>
+          <span class="skill" contenteditable="true">Python</span>
+          <span class="skill" contenteditable="true">SQL</span>
+          <span class="skill" contenteditable="true">React</span>
+          <span class="skill" contenteditable="true">Git</span>
+        </div>
+
+        <p class="muted" contenteditable="true" style="margin-top: 10px;">
+          공부와 프로젝트 경험을 바탕으로 개발 역량을 지속적으로 학습하고 있습니다.
+        </p>
+
+      </section>
+
+    </div>
+
+    <footer class="footer">
+      <span>DEVELOPER · RESUME</span>
+      <span contenteditable="true">위 기재 사항은 사실과 다름없습니다.</span>
+    </footer>
+
+  </main>
+
+</body>
+</html>
